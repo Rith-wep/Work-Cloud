@@ -1,0 +1,51 @@
+{
+    "name":  "daily-opportunity-client",
+    "version":  "1.0.0",
+    "private":  true,
+    "type":  "module",
+    "browserslist":  [
+                         "\u003e= 0.5%",
+                         "last 2 versions",
+                         "Firefox ESR",
+                         "Safari \u003e= 12",
+                         "iOS \u003e= 12",
+                         "not dead"
+                     ],
+    "scripts":  {
+                    "dev":  "vite --port 5173",
+                    "dev:admin":  "vite --port 5174 --open /admin.html",
+                    "build":  "vite build",
+                    "preview":  "vite preview",
+                    "test":  "vitest run --no-cache",
+                    "test:watch":  "vitest"
+                },
+    "dependencies":  {
+                         "@react-oauth/google":  "^0.13.4",
+                         "axios":  "^1.13.6",
+                         "framer-motion":  "^11.15.0",
+                         "i18next":  "^24.0.2",
+                         "i18next-browser-languagedetector":  "^8.2.1",
+                         "jspdf":  "^4.2.0",
+                         "lucide-react":  "^0.576.0",
+                         "qrcode":  "^1.5.4",
+                         "react":  "^18.3.1",
+                         "react-dom":  "^18.3.1",
+                         "react-hot-toast":  "^2.6.0",
+                         "react-i18next":  "^15.1.0",
+                         "react-icons":  "^4.12.0",
+                         "react-router-dom":  "^6.28.0",
+                         "socket.io-client":  "^4.8.3"
+                     },
+    "devDependencies":  {
+                            "@testing-library/jest-dom":  "^6.6.3",
+                            "@testing-library/react":  "^16.1.0",
+                            "@testing-library/user-event":  "^14.5.2",
+                            "@vitejs/plugin-react":  "^4.3.1",
+                            "autoprefixer":  "^10.4.20",
+                            "jsdom":  "^25.0.1",
+                            "postcss":  "^8.4.47",
+                            "tailwindcss":  "^3.4.13",
+                            "vite":  "^5.4.8",
+                            "vitest":  "^2.1.9"
+                        }
+}

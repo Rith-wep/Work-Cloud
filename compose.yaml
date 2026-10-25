@@ -1,0 +1,89 @@
+name: workcloud
+
+services:
+  web:
+    image: ${WORKCLOUD_WEB_IMAGE:-workcloud-web:local}
+    build:
+      context: .
+      dockerfile: ops/docker/client.Dockerfile
+      args:
+        VITE_API_BASE_URL: /api
+        VITE_AI_API_BASE_URL: /ai
+        VITE_MAIN_APP_ORIGIN: ${VITE_MAIN_APP_ORIGIN:-http://localhost:8080}
+        VITE_ADMIN_APP_ORIGIN: ${VITE_ADMIN_APP_ORIGIN:-http://localhost:8080}
+        VITE_GOOGLE_MAPS_API_KEY: ${VITE_GOOGLE_MAPS_API_KEY:-}
+        VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID:-}
+        VITE_CLOUDINARY_CLOUD_NAME: ${VITE_CLOUDINARY_CLOUD_NAME:-}
+        VITE_CLOUDINARY_UPLOAD_PRESET: ${VITE_CLOUDINARY_UPLOAD_PRESET:-}
+    ports:
+      - "${WEB_PORT:-8080}:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+      ai:
+        condition: service_healthy
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:uid=101,gid=101,mode=0750
+      - /tmp:uid=101,gid=101,mode=0750
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    networks: [edge, backend]
+
+  api:
+    image: ${WORKCLOUD_API_IMAGE:-workcloud-api:local}
+    build:
+      context: .
+      dockerfile: ops/docker/api.Dockerfile
+    env_file:
+      - path: ${API_ENV_FILE:-./server/.env.docker.example}
+        required: true
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      CLIENT_ORIGINS: ${CLIENT_ORIGINS:-http://localhost:8080}
+      ADMIN_ORIGINS: ${ADMIN_ORIGINS:-http://localhost:8080}
+      AI_API_BASE_URL: http://ai:8000
+      AI_API_BASE_URL_INTERNAL: http://ai:8000
+    expose: ["5000"]
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    stop_grace_period: 20s
+    networks: [backend]
+
+  ai:
+    image: ${WORKCLOUD_AI_IMAGE:-workcloud-ai:local}
+    build:
+      context: .
+      dockerfile: ops/docker/ai.Dockerfile
+    environment:
+      PORT: 8000
+      APP_ENV: production
+      AI_CORS_ORIGINS: ${AI_CORS_ORIGINS:-http://localhost:8080}
+      MONGODB_URI: ${MONGODB_URI:-}
+      MONGO_DB_NAME: ${MONGO_DB_NAME:-}
+    expose: ["8000"]
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    networks: [backend]
+
+networks:
+  edge: {}
+  backend: {}

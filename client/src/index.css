@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Kantumruy+Pro:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-ui-en: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-ui-km: "Kantumruy Pro", "Koh Santepheap", "Noto Sans Khmer", sans-serif;
+  --font-ui-zh: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Heiti SC", sans-serif;
+  --font-ui: var(--font-ui-en);
+  font-family: var(--font-ui);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%);
+  color: #0f172a;
+  font-family: var(--font-ui);
+}
+
+/* Ensure the React mount point occupies the page in every browser. */
+#root {
+  min-height: 100vh;
+}
+
+/* Older browsers ignore backdrop-filter; opaque surfaces remain readable. */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  [class*="backdrop-blur-"] {
+    background-color: rgba(255, 255, 255, 0.97);
+  }
+}
+
+html[lang="en"] {
+  --font-ui: var(--font-ui-en);
+}
+
+html[lang="km"] {
+  --font-ui: var(--font-ui-km);
+}
+
+html[lang="zh"] {
+  --font-ui: var(--font-ui-zh);
+}
+
+/* Khmer UI tuning for compact nav surfaces */
+html[lang="km"] .wc-nav-label {
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+html[lang="km"] .wc-nav-surface {
+  line-height: 1.2;
+}
+
+html[lang="km"] .wc-feed-text {
+  font-family: var(--font-ui-km);
+  letter-spacing: 0.005em;
+  line-height: 1.32;
+}
+
+/* Language dropdown label font quality per option */
+.wc-lang-label[data-lang="en"] {
+  font-family: var(--font-ui-en);
+}
+
+.wc-lang-label[data-lang="km"] {
+  font-family: var(--font-ui-km);
+}
+
+.wc-lang-label[data-lang="zh"] {
+  font-family: var(--font-ui-zh);
+}
+
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: skeleton-shimmer 1.35s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.route-progress {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.route-progress--active {
+  opacity: 1;
+}
+
+.route-progress__bar {
+  height: 3px;
+  background: linear-gradient(90deg, #4f46e5 0%, #10b981 100%);
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.45);
+  transition: width 220ms ease-out;
+}

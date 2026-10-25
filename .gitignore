@@ -1,0 +1,20 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+!.env.docker.example
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.docker.example
+
+# Dependencies and generated output
+**/node_modules/
+**/dist/
+**/.venv/
+**/__pycache__/
+**/*.py[cod]
+**/coverage/
+**/.pytest_cache/
+**/.vite/
+server/uploads/
